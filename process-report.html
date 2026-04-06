@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Процессы по договору — краткий отчёт</title>
+  <style>
+    :root { --bg:#f4f5f8; --card:#fff; --text:#1a1d23; --muted:#5c6370; --accent:#2563eb; --b:#e2e5eb; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.45; color:var(--text); background:var(--bg); font-size:15px; }
+    header { background:linear-gradient(120deg,#1e3a5f,#2563eb); color:#fff; padding:1.25rem 1rem 1.5rem; }
+    header h1 { margin:0 0 .35rem; font-size:1.35rem; }
+    header p { margin:0; opacity:.92; font-size:.92rem; max-width:48rem; }
+    .wrap { max-width:44rem; margin:0 auto; padding:1rem; }
+    nav { background:var(--card); border:1px solid var(--b); border-radius:8px; padding:.75rem 1rem; margin-bottom:1rem; font-size:.9rem; }
+    nav ol { margin:0; padding-left:1.2rem; }
+    nav a { color:var(--accent); text-decoration:none; }
+    nav a:hover { text-decoration:underline; }
+    section { background:var(--card); border:1px solid var(--b); border-radius:8px; padding:1rem 1rem 1.1rem; margin-bottom:.85rem; scroll-margin-top:.75rem; }
+    section h2 { margin:0 0 .65rem; font-size:1.1rem; border-bottom:1px solid var(--b); padding-bottom:.4rem; }
+    section h3 { margin:.85rem 0 .35rem; font-size:.95rem; color:var(--muted); font-weight:600; }
+    p { margin:.4rem 0; }
+    ul { margin:.35rem 0; padding-left:1.2rem; }
+    li { margin:.2rem 0; }
+    table { width:100%; border-collapse:collapse; font-size:.88rem; margin:.4rem 0; }
+    th, td { border:1px solid var(--b); padding:.35rem .45rem; text-align:left; vertical-align:top; }
+    th { background:#f0f2f6; }
+    code { background:#f0f2f6; padding:.1rem .3rem; border-radius:3px; font-size:.88em; }
+    .diagram { background:#fafbfc; border:1px dashed var(--b); border-radius:6px; padding:.65rem; margin:.6rem 0; overflow-x:auto; }
+    .note { font-size:.82rem; color:var(--muted); margin-top:.5rem; }
+    footer { text-align:center; color:var(--muted); font-size:.78rem; padding:1rem; }
+    @media print { section { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Процессы по договору (витражное остекление)</h1>
+      <p>Краткая сводка по <code>departments.md</code> и <code>Process/**/*.md</code>. Черновики; при расхождении приоритет у исходных файлов.</p>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <nav aria-label="Оглавление">
+      <ol>
+        <li><a href="#deps">Подразделения и цепочка</a></li>
+        <li><a href="#reg">Registration</a> · <a href="#start">StartSession</a></li>
+        <li><a href="#km">KM</a> · <a href="#ozm">OZM (ELMA)</a> · <a href="#geo">Geodez (ELMA)</a></li>
+        <li><a href="#overview">Обзор связей</a></li>
+      </ol>
+    </nav>
+
+    <section id="deps">
+      <h2>Подразделения</h2>
+      <ul>
+        <li><strong>РП</strong> — сквозной контроль; ключевые согласования с <strong>ПДО</strong>.</li>
+        <li><strong>ПДО</strong> — сроки и графики для <strong>ОС</strong>, <strong>Производства</strong>, <strong>МП</strong>.</li>
+        <li><strong>ОС</strong> — закупка/логистика только по заданиям <strong>ПДО</strong>.</li>
+        <li><strong>ОП</strong> — проектно-сметная документация, геодезия объекта (ранее в текстах мог встречаться код ПО — в справочнике закреплено <strong>ОП</strong>).</li>
+      </ul>
+      <table>
+        <thead><tr><th>Код</th><th>Суть</th></tr></thead>
+        <tbody>
+          <tr><td>РП, ПТО, Финансы</td><td>Как в полной таблице <code>departments.md</code>.</td></tr>
+          <tr><td>ОП</td><td>Отдел проектирования; внутри: руководитель ОП, <strong>КОП</strong>.</td></tr>
+          <tr><td>ПДО, ОС, Производство, МП</td><td>Диспетчеризация, снабжение, производство, монтаж.</td></tr>
+          <tr><td>Должности</td><td>Руководитель ПДО, менеджер ПДО, ОПРК, ОТК, товарный учёт — см. раздел должностей в <code>departments.md</code>.</td></tr>
+        </tbody>
+      </table>
+      <div class="diagram"><pre class="mermaid">
+flowchart TB
+  RP[РП] <--> PDO[ПДО]
+  PDO --> OS[ОС]
+  PDO --> PR[Производство]
+  PDO --> MP[МП]
+      </pre></div>
+    </section>
+
+    <section id="reg">
+      <h2>Регистрация договора <code>Registration</code></h2>
+      <ul>
+        <li><strong>Цель:</strong> договор в реестрах/ДО (<strong>ПТО</strong>: Excel, ELMA) и в учёте (<strong>Финансы</strong>: карточка в 1С7).</li>
+        <li><strong>Инициатор:</strong> РП передаёт сведения в ПТО и Финансы.</li>
+        <li><strong>Ход:</strong> после РП — ветви <strong>ПТО</strong> и <strong>Финансы</strong> моделируются <strong>параллельно</strong> до полного отражения в системах.</li>
+        <li><strong>Выход:</strong> записи ПТО + карточка в 1С7; при необходимости подтверждение РП.</li>
+      </ul>
+      <div class="diagram"><pre class="mermaid">
+flowchart LR
+  RP[РП] --> PTO[ПТО: Excel, ELMA]
+  RP --> FIN[Финансы: 1С7]
+      </pre></div>
+    </section>
+
+    <section id="start">
+      <h2>Стартовое совещание <code>StartSession</code></h2>
+      <ul>
+        <li><strong>Цель:</strong> после постановки на учёт — согласовать приоритеты и очередность строительства и проектирования.</li>
+        <li><strong>До совещания:</strong> РП готовит черновик очередностей.</li>
+        <li><strong>Участники (черновик):</strong> РП; руководитель строительного направления (связь с МП/контуром — уточняется); <strong>руководитель ОП</strong>; <strong>руководитель ПДО</strong> (обязательность — уточнить); при необходимости менеджер ПДО, руководитель/менеджер ОС; др. по регламенту.</li>
+        <li><strong>Выход:</strong> согласованные очередности; понимание следующих шагов для ОП, ПДО и др.; при необходимости протокол/график.</li>
+      </ul>
+    </section>
+
+    <section id="km">
+      <h2>КМ <code>KM</code></h2>
+      <ul>
+        <li><strong>Цель:</strong> разработка конструкций металлических в <strong>ОП</strong> по заданию <strong>РП</strong> сроками; готовность РП получает через <strong>руководителя ОП</strong>.</li>
+        <li><strong>Цепочка:</strong> РП → ОП (в т.ч. <strong>КОП</strong> по постановке руководителя ОП) → руководитель ОП информирует РП.</li>
+        <li><strong>Открыто:</strong> формат задания; промежуточная отчётность; передача КМ в ПДО.</li>
+      </ul>
+      <div class="diagram"><pre class="mermaid">
+flowchart LR
+  A[РП: задание] --> B[ОП / КОП: КМ]
+  B --> C[Руководитель ОП]
+  C --> D[РП: готовность]
+      </pre></div>
+    </section>
+
+    <section id="ozm">
+      <h2>ОЗМ в ELMA <code>OZM</code></h2>
+      <ul>
+        <li><strong>Предусловие:</strong> без готовности по процессу <strong>KM</strong> старт ОЗМ не допускается (проверка в ELMA — по настройкам).</li>
+        <li><strong>Зоны:</strong> РП (старт, СК при необходимости, проверки КМД/ОЗМ, запуск снабжения, приёмка 1С, стройкомплекты); <strong>руководитель ОП</strong> (в ELMA дорожка «РОП») и <strong>КОП</strong>; параллельно учёт: <strong>1С7</strong> (ветка ПДО — товарный учёт или ветка <strong>ОПРК</strong>) и <strong>1С8</strong> (менеджер производства ОТК); оповещения т.ч. <strong>руководитель ПДО</strong>.</li>
+        <li><strong>Суть потока:</strong> РП → руководитель ОП (подготовка, назначение КОП) → КОП создаёт ОЗМ → проверки, при необходимости график-заказ КМД → заведение в 1С → финальные задачи РП.</li>
+        <li><strong>Уточнить:</strong> связь «запустить снабжение» с заданиями ПДО→ОС; правила веток ELMA.</li>
+      </ul>
+      <div class="diagram"><pre class="mermaid">
+flowchart TB
+  R[РП] --> RO[Руководитель ОП]
+  RO --> K[КОП: ОЗМ]
+  K --> RO
+  RO --> R
+  R --> Y[Заведение: 1С7 / 1С8]
+  Y --> R
+      </pre></div>
+      <p class="note">РОП в ELMA = руководитель ОП (<strong>ОП</strong>), отдельного кода «РОП» в справочнике нет.</p>
+    </section>
+
+    <section id="geo">
+      <h2>Геодезия в ELMA <code>Geodez</code></h2>
+      <ul>
+        <li><strong>Цель:</strong> геодезия по заданию РП; исполнитель в <strong>ОП</strong>; проверка <strong>руководителем ОП</strong>; финал <strong>РП</strong>; статусы и лента ELMA.</li>
+        <li><strong>Поток:</strong> старт РП → назначение исполнителя (руководитель ОП) → работы геодезиста → проверка руководителем ОП (возвраты) → проверка РП (возврат руководителю ОП или завершение) → при дедлайнах — ветка «Дедлайн» у руководителя ОП.</li>
+        <li><strong>Выход:</strong> файл отчёта по согласованию исполнитель → руководитель ОП → РП; при завершении — уведомления внешним получателям (РК, директор СД — не в <code>departments.md</code>).</li>
+      </ul>
+      <div class="diagram"><pre class="mermaid">
+flowchart LR
+  RP[РП] --> L[Руководитель ОП]
+  L --> G[Геодезист]
+  G --> L
+  L --> RP
+      </pre></div>
+    </section>
+
+    <section id="overview">
+      <h2>Обзор (логика документов)</h2>
+      <ul>
+        <li>Учёт/регистрация → <strong>стартовое совещание</strong> → проектные и диспетчерские процессы (КМ, геодезия, ОЗМ и др.).</li>
+        <li><strong>ОЗМ</strong> опирается на готовность <strong>KM</strong>.</li>
+      </ul>
+      <div class="diagram"><pre class="mermaid">
+flowchart LR
+  REG[Регистрация] --> ST[Стартовое совещание]
+  ST --> KM[КМ]
+  KM --> OZM[ОЗМ ELMA]
+  ST --> GZ[Геодезия ELMA]
+      </pre></div>
+    </section>
+  </div>
+
+  <footer>Диаграммы: Mermaid через CDN. Нужен интернет при открытии файла.</footer>
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: false, theme: "neutral", securityLevel: "strict", flowchart: { curve: "basis" } });
+    await mermaid.run({ querySelector: ".mermaid" });
+  </script>
+</body>
+</html>
